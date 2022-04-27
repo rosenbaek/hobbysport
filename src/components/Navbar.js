@@ -18,7 +18,7 @@ const Navbar = (props) => {
         </div>
 
         <div className="flex justify-between text-lg ">
-          <NavLink className="flex px-5 items-center" end to="/">
+          <NavLink className="flex px-5 items-center" to="/">
             Hjem
           </NavLink>
 
