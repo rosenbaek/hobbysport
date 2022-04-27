@@ -11,14 +11,14 @@ const Navbar = (props) => {
     console.log(user);
   });
   return (
-    <nav className="w-full bg-slate-200">
+    <nav className="w-full border-b-2 border-red-500 py-5">
       <div className="flex justify-between container mx-auto">
         <div className="flex-1">
           <img className="h-12" src={logo} alt="logo" />
         </div>
 
-        <div className="flex justify-between ">
-          <NavLink className="flex px-5 items-center" exact={true} to="/">
+        <div className="flex justify-between text-lg ">
+          <NavLink className="flex px-5 items-center " exact={true} to="/">
             Hjem
           </NavLink>
 

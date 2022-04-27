@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import temp from '../images/temp.jpg';
 
 const HomePage = () => {
   //Array of 20 random numbers
@@ -26,20 +27,29 @@ const HomePage = () => {
 
         <div className="grid grid-cols-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 items-center lg:items-start gap-5 ">
           {numbers.map((number) => (
-            <div className=" rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-full  pb-5 text-xl cursor-pointer hover:scale-[1.02] mx-auto">
-              <div className="w-full bg-red-500 rounded-t-lg h-full">
-                <h2 className="px-3 py-3 text-lg font-bold text-center">
-                  {number}
-                </h2>
+            <div className="relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-fulltext-xl cursor-pointer mx-auto">
+              <div className="w-full rounded-t-lg">
+                <img className="rounded-t-lg w-full" src={temp} alt="temp" />
               </div>
-              <div className="px-3">
-                <ul>
+              <div className="">
+                <h2 className="px-3 py-3 text-lg font-bold">{number}</h2>
+                <ul className="px-3 pb-3">
                   <li>Best sport ever, we hit stuffs with a bat</li>
                   <li>
                     {' '}
                     <strong>Type:</strong> Hold sport 🔥
                   </li>
                 </ul>
+                {/* <a
+                  class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
+                  href="#"
+                >
+                  Read more
+                </a> */}
+
+                <button className="bg-red-500 rounded-b-lg w-full py-3 font-medium hover:bg-red-400">
+                  Se mere
+                </button>
               </div>
             </div>
           ))}
