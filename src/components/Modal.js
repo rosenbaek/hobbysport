@@ -1,8 +1,4 @@
-import { useState } from 'react';
-
-const Modal = ({ sport, show, setShowParentModal }) => {
-  const [showModal, setShowModal] = useState(show);
-
+const Modal = ({ sport, setShowParentModal }) => {
   return (
     <div>
       <div className="bg-black opacity-50  absolute z-10 top-0 left-0 h-screen w-screen"></div>
