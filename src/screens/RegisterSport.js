@@ -1,5 +1,8 @@
 import { useState } from 'react';
-
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { firestore } from '../firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const initialSport = {
   name: '',
   description: '',
@@ -7,6 +10,7 @@ const initialSport = {
   rules: [],
   image: '',
 };
+
 const RegisterSport = () => {
   const [sports, setSports] = useState(initialSport);
   const [rule, setRule] = useState('');
@@ -16,10 +20,20 @@ const RegisterSport = () => {
     setSports({ ...sports, [e.target.id]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const newSportRef = collection(firestore, 'sports');
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(sports);
-    console.log('first');
+    try {
+      const newSport = await addDoc(newSportRef, sports);
+      console.log(newSport);
+      if (newSport.id !== null) {
+        toast.success('Sporten blev tilføjet');
+      } else {
+        toast.error('Sporten blev ikke tilføjet');
+      }
+    } catch (e) {
+      console.error(e);
+    }
     setSports(initialSport);
   };
   const handleList = (e) => {
@@ -176,6 +190,17 @@ const RegisterSport = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

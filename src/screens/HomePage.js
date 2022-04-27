@@ -70,7 +70,11 @@ const HomePage = () => {
                 <div className="w-full rounded-t-lg">
                   <img
                     className="rounded-t-lg w-full"
-                    src={sport.img}
+                    src={
+                      sport.img
+                        ? sport.img
+                        : 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?cs=srgb&dl=pexels-pixabay-356079.jpg&fm=jpg'
+                    }
                     alt="temp"
                   />
                 </div>
@@ -93,8 +97,6 @@ const HomePage = () => {
             ))}
         </div>
       </div>
-
-      {/* create modal based on selected sport */}
     </>
   );
 };
