@@ -1,16 +1,50 @@
 import { useState, useEffect } from 'react';
-import temp from '../images/temp.jpg';
+import { firestore } from '../firebase';
+import Modal from '../components/Modal';
 
 const HomePage = () => {
-  //Array of 20 random numbers
+  const [sports, setSports] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedSport, SetSelectedSport] = useState(null);
+
+  const seeMore = (sport) => {
+    setShowModal(!showModal);
+    SetSelectedSport(sport);
+    console.log('see mere');
+  };
+  useEffect(() => {
+    const unsubscribe = firestore
+      .collection('sports')
+      .onSnapshot((snapshot) => {
+        setLoading(true);
+        if (snapshot.size) {
+          let myDataArray = [];
+          snapshot.forEach((doc) =>
+            myDataArray.push({ id: doc.id, ...doc.data() })
+          );
+
+          setSports(myDataArray);
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [firestore]);
 
   const [search, setSearch] = useState('');
-  const numbers = Array.from({ length: 20 }, () =>
-    Math.floor(Math.random() * 20)
-  );
 
   return (
     <>
+      {showModal && (
+        <Modal
+          sport={selectedSport}
+          show={showModal}
+          setShowParentModal={setShowModal}
+        />
+      )}
       <div className="flex flex-col">
         <div className="flex flex-col lg:flex-row justify-between py-10 gap-3 w-full">
           <input
@@ -26,35 +60,40 @@ const HomePage = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 items-center lg:items-start gap-5 ">
-          {numbers.map((number) => (
-            <div className="relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-fulltext-xl cursor-pointer mx-auto">
-              <div className="w-full rounded-t-lg">
-                <img className="rounded-t-lg w-full" src={temp} alt="temp" />
-              </div>
-              <div className="">
-                <h2 className="px-3 py-3 text-lg font-bold">{number}</h2>
-                <ul className="px-3 pb-3">
-                  <li>Best sport ever, we hit stuffs with a bat</li>
-                  <li>
-                    {' '}
-                    <strong>Type:</strong> Hold sport 🔥
-                  </li>
-                </ul>
-                {/* <a
-                  class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
-                  href="#"
-                >
-                  Read more
-                </a> */}
+          {!loading &&
+            sports.map((sport, index) => (
+              <div
+                key={index}
+                className="relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-fulltext-xl cursor-pointer mx-auto"
+              >
+                <div className="w-full rounded-t-lg">
+                  <img
+                    className="rounded-t-lg w-full"
+                    src={sport.img}
+                    alt="temp"
+                  />
+                </div>
+                <div className="">
+                  <h2 className="px-3 py-3 text-lg font-bold">{sport.name}</h2>
+                  <ul className="px-3 pb-3">
+                    <li>{sport.description}</li>
+                  </ul>
 
-                <button className="bg-red-500 rounded-b-lg w-full py-3 font-medium hover:bg-red-400">
-                  Se mere
-                </button>
+                  <button
+                    className="bg-red-500 rounded-b-lg w-full py-3 font-medium hover:bg-red-400"
+                    onClick={() => {
+                      seeMore(sport);
+                    }}
+                  >
+                    Se mere
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
+
+      {/* create modal based on selected sport */}
     </>
   );
 };
