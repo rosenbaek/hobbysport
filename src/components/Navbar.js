@@ -18,7 +18,7 @@ const Navbar = (props) => {
 
 			<div className="flex justify-between ">
 				<NavLink className="flex px-5 items-center" exact={true} to="/">
-					Home
+					Hjem
 				</NavLink>
 
 				{user === null ? (
@@ -30,7 +30,7 @@ const Navbar = (props) => {
 							exact={true}
 							to="/protected"
 						>
-							Protected
+							Beskyttet
 						</NavLink>
 						<SignOut auth={props.auth} />
 					</>

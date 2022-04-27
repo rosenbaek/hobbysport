@@ -9,7 +9,7 @@ export const SignIn = (props) => {
 	return (
 		<>
 			<button className="px-5" onClick={signInWithGoogle}>
-				Sign In
+				Log In
 			</button>
 		</>
 	);
@@ -19,7 +19,7 @@ export const SignOut = (props) => {
 	return (
 		props.auth.currentUser && (
 			<button className="px-5" onClick={() => props.auth.signOut()}>
-				Sign Out
+				Log Ud
 			</button>
 		)
 	);
