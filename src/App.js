@@ -6,6 +6,8 @@ import "./App.css";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import ProtectedScreen from "./screens/ProtectedScreen";
+import HomePage from "./screens/HomePage";
+import Navbar from "./components/Navbar";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,9 +30,10 @@ const analytics = getAnalytics(app);
 function App() {
 	return (
 		<>
-			<h1>Welcome to React Router!</h1>
+			<Navbar />
 			<Routes>
-				<Route path="/" element={<ProtectedScreen />} />
+				<Route path="/" element={<HomePage />} />
+				<Route path="/protected" element={<ProtectedScreen />} />
 			</Routes>
 		</>
 	);
