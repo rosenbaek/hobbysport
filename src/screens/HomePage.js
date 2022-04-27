@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { firestore } from '../firebase';
 import Modal from '../components/Modal';
+import { NavLink } from 'react-router-dom';
 
 const HomePage = () => {
   const [sports, setSports] = useState([]);
@@ -55,7 +56,7 @@ const HomePage = () => {
             value={search}
           />
           <button className="w-full bg-red-500 rounded-lg font-medium h-12 hover:bg-red-600">
-            Register Sport
+            <NavLink to="/registersport">Register Sport</NavLink>
           </button>
         </div>
 
