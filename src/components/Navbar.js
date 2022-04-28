@@ -21,7 +21,9 @@ const Navbar = (props) => {
           <NavLink className="flex px-5 items-center" to="/">
             Hjem
           </NavLink>
-
+          <NavLink className="flex px-5 items-center" to="/events">
+            Events
+          </NavLink>
           {user === null ? (
             <SignIn auth={props.auth} />
           ) : (
