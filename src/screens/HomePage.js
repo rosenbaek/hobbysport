@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { firestore } from "../firebase";
 import Modal from "../components/Modal";
-import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
