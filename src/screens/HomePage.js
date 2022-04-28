@@ -70,19 +70,18 @@ const HomePage = () => {
 						sports.map((sport, index) => (
 							<div
 								key={index}
-								className="relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-fulltext-xl cursor-pointer mx-auto"
+								className="justify-between relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-full h-full text-xl cursor-pointer mx-auto"
 							>
-								<div className="w-full rounded-t-lg">
-									<img
-										className="rounded-t-lg w-full"
-										src={
-											sport.img
-												? sport.img
-												: "https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?cs=srgb&dl=pexels-pixabay-356079.jpg&fm=jpg"
-										}
-										alt="temp"
-									/>
-								</div>
+								<img
+									className="rounded-t-lg h-full"
+									src={
+										sport.image
+											? sport.image
+											: "https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?cs=srgb&dl=pexels-pixabay-356079.jpg&fm=jpg"
+									}
+									alt="temp"
+								/>
+
 								<div className="">
 									<h2 className="px-3 py-3 text-lg font-bold">{sport.name}</h2>
 									<ul className="px-3 pb-3">
