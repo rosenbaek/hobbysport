@@ -12,23 +12,26 @@ const Navbar = (props) => {
   });
   return (
     <nav className="w-full border-b-2 border-red-500 py-5">
-      <div className="flex justify-between container mx-auto">
+      <div className="flex flex-col items-center lg:flex-row lg:justify-between container mx-auto">
         <div className="flex-1">
           <img className="h-12" src={logo} alt="logo" />
         </div>
 
         <div className="flex justify-between text-lg ">
-          <NavLink className="flex px-5 items-center" to="/">
+          <NavLink className="flex px-2 lg:px-5 items-center" to="/">
             Hjem
           </NavLink>
-          <NavLink className="flex px-5 items-center" to="/events">
+          <NavLink className="flex px-2 lg:px-5 items-center" to="/events">
             Events
           </NavLink>
           {user === null ? (
             <SignIn auth={props.auth} toast={props.toast} />
           ) : (
             <>
-              <NavLink className="flex px-5 items-center" to="/registerteam">
+              <NavLink
+                className="flex px-2 lg:px-5 items-center"
+                to="/registerteam"
+              >
                 Registrer Team
               </NavLink>
               <SignOut auth={props.auth} />

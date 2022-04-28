@@ -47,32 +47,32 @@ const HomePage = () => {
           setShowParentModal={setShowModal}
         />
       )}
-      <div className="flex flex-col">
+      <div className="flex flex-col mx-1">
         <div className="flex flex-col lg:flex-row justify-between py-10 gap-3 w-full">
           <input
-            className="border-2 border-gray-500 rounded-lg py-2 w-full focus:outline-none active:outline-none"
+            className="border-2 border-gray-500 rounded-lg py-2 px-2 w-full focus:outline-none active:outline-none"
             type="text"
             placeholder="Search"
             onChange={(e) => setSearch(e.currentTarget.value)}
             value={search}
           />
           <button
-            className="w-full bg-red-500 rounded-lg font-medium h-12 hover:bg-red-600"
+            className="w-full bg-red-500 rounded-lg font-bold h-12 hover:bg-red-400"
             onClick={() => navigate('/registersport')}
           >
             Register Sport
           </button>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 items-center lg:items-start gap-5 ">
+        <div className="grid grid-cols-2 sm:grid sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6  items-center lg:items-start gap-5 ">
           {!loading &&
             sports.map((sport, index) => (
               <div
                 key={index}
-                className="justify-between relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-full h-full text-xl cursor-pointer mx-auto"
+                className="justify-between relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-full text-xl cursor-pointer mx-auto"
               >
                 <img
-                  className="rounded-t-lg h-full"
+                  className="rounded-t-lg w-full h-48"
                   src={
                     sport.image
                       ? sport.image
