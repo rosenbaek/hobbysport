@@ -1,21 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
-import { firestore } from "../firebase";
+import { auth, firestore } from "../firebase";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
 const initialTeam = {
 	name: "",
 	members: [],
-	captain: "",
 };
 
 const RegisterTeam = ({ toast }) => {
 	const [team, setTeam] = useState(initialTeam);
 	const [members, setMembers] = useState("");
 	const navigate = useNavigate();
+	const [user] = useAuthState(auth);
 
 	const handleChange = (e) => {
-		setTeam({ ...team, [e.target.id]: e.target.value });
+		setTeam({ ...team, [e.target.id]: e.target.value, captain: user.email });
 	};
 
 	const newSportRef = collection(firestore, "teams");
@@ -48,11 +49,21 @@ const RegisterTeam = ({ toast }) => {
 	const addToList = (e) => {
 		e.preventDefault();
 		if (e.target.id === "addMember") {
-			if (members.includes("@gmail.com") || members.includes("@hotmail.com")) {
-				setTeam({ ...team, members: [...team.members, members] });
-				setMembers("");
+			if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(members)) {
+				firestore
+					.collection("users")
+					.doc(members)
+					.get()
+					.then((snapshot) => {
+						if (snapshot.exists) {
+							setTeam({ ...team, members: [...team.members, members] });
+							setMembers("");
+						} else {
+							toast.warn("Der er sket en fejl - beklager");
+						}
+					});
 			} else {
-				toast.warn("Din holdkammerats email er ugyldig");
+				toast.warn("Email er ugyldig");
 			}
 		}
 	};
@@ -91,9 +102,8 @@ const RegisterTeam = ({ toast }) => {
 							className="border-2 w-full rounded-lg"
 							type="text"
 							id="captain"
-							onChange={handleChange}
-							value={team.captain}
-							required
+							value={user.email}
+							disabled
 						/>
 
 						<label htmlFor="name">Holdkammerater (email)</label>
