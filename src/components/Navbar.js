@@ -25,11 +25,11 @@ const Navbar = (props) => {
             Events
           </NavLink>
           {user === null ? (
-            <SignIn auth={props.auth} />
+            <SignIn auth={props.auth} toast={props.toast} />
           ) : (
             <>
-              <NavLink className="flex px-5 items-center" to="/protected">
-                Beskyttet
+              <NavLink className="flex px-5 items-center" to="/registerteam">
+                Registrer Team
               </NavLink>
               <SignOut auth={props.auth} />
             </>

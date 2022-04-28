@@ -9,19 +9,17 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import RegisterSport from './screens/RegisterSport';
 import { ToastContainer, toast } from 'react-toastify';
+import RegisterTeam from './screens/RegisterTeam';
 import EventScreen from './screens/EventScreen';
 
 function App() {
   const [user] = useAuthState(auth);
   return (
     <>
-      <Navbar auth={auth} />
+      <Navbar auth={auth} toast={toast} />
       <div className="container mx-auto">
         <Routes>
           <Route path="/" end element={<HomePage />} />
-
-          <Route path="/events" element={<EventScreen />} />
-
           <Route
             path="/protected"
             element={
@@ -35,6 +33,15 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <RegisterSport toast={toast} />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/events" element={<EventScreen />} />
+          <Route
+            path="/registerteam"
+            element={
+              <ProtectedRoute user={user}>
+                <RegisterTeam toast={toast} />
               </ProtectedRoute>
             }
           />
