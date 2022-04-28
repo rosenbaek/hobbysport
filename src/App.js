@@ -11,6 +11,7 @@ import RegisterSport from './screens/RegisterSport';
 import { ToastContainer, toast } from 'react-toastify';
 import RegisterTeam from './screens/RegisterTeam';
 import EventScreen from './screens/EventScreen';
+import RegisterEvent from './screens/RegisterEvent';
 
 function App() {
   const [user] = useAuthState(auth);
@@ -42,6 +43,14 @@ function App() {
             element={
               <ProtectedRoute user={user}>
                 <RegisterTeam toast={toast} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/registerevent"
+            element={
+              <ProtectedRoute user={user}>
+                <RegisterEvent toast={toast} />
               </ProtectedRoute>
             }
           />

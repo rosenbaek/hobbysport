@@ -6,7 +6,9 @@ import {
   AccordionItemPanel,
 } from 'react-accessible-accordion';
 
+import { useNavigate } from 'react-router-dom';
 const EventScreen = () => {
+  const navigate = useNavigate();
   const event = {
     name: 'Event 1',
     description: 'Super sejt',
@@ -43,11 +45,6 @@ const EventScreen = () => {
     date: new Date(2022, 10, 11, 20, 5),
     capacity: 11,
   };
-  //create 10 random dates
-  //   const dates = [];
-  //   for (let i = 0; i < 10; i++) {
-  //     dates.push(new Date(2020, i, i + 1, i + 2, i + 3, i + 4, i + 5));
-  //   }
 
   const events = [event, event2, event3, event4];
 
@@ -61,7 +58,10 @@ const EventScreen = () => {
 
   return (
     <div className="mx-2 flex flex-col items-center">
-      <button className="w-full bg-red-500 max-w-screen-sm rounded-lg mt-5 font-bold h-12 hover:bg-red-400">
+      <button
+        onClick={() => navigate('/registerevent')}
+        className="w-full bg-red-500 max-w-screen-sm rounded-lg mt-5 font-bold h-12 hover:bg-red-400"
+      >
         Register Event
       </button>
       <div className="container grid grid-cols-2 py-5">
@@ -75,25 +75,30 @@ const EventScreen = () => {
                   </AccordionItemButton>
                 </AccordionItemHeading>
                 <AccordionItemPanel>
-                  {events.map(
-                    (event, index) =>
-                      event.date.toLocaleDateString('da-DK', {
-                        dateStyle: 'full',
-                      }) === date && (
-                        <div key={index} className="flex justify-between px-5">
-                          <p>
-                            {event.date.getHours() < 10
-                              ? `0${event.date.getHours()}`
-                              : event.date.getHours()}
-                            :
-                            {event.date.getMinutes() < 10
-                              ? `0${event.date.getMinutes()}`
-                              : event.date.getMinutes()}
-                          </p>
-                          <p>{event.name}</p>
-                        </div>
-                      )
-                  )}
+                  {events
+                    .sort((a, b) => (a.date < b.date ? -1 : 1))
+                    .map(
+                      (event, index) =>
+                        event.date.toLocaleDateString('da-DK', {
+                          dateStyle: 'full',
+                        }) === date && (
+                          <div
+                            key={index}
+                            className="flex justify-between px-5"
+                          >
+                            <p>
+                              {event.date.getHours() < 10
+                                ? `0${event.date.getHours()}`
+                                : event.date.getHours()}
+                              :
+                              {event.date.getMinutes() < 10
+                                ? `0${event.date.getMinutes()}`
+                                : event.date.getMinutes()}
+                            </p>
+                            <p>{event.name}</p>
+                          </div>
+                        )
+                    )}
                 </AccordionItemPanel>
               </AccordionItem>
             ))}
