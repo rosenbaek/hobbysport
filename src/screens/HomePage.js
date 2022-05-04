@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { firestore } from '../firebase';
-import Modal from '../components/Modal';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { firestore } from "../firebase";
+import Modal from "../components/SportDetailsModal";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [sports, setSports] = useState([]);
@@ -13,11 +13,11 @@ const HomePage = () => {
   const seeMore = (sport) => {
     setShowModal(!showModal);
     SetSelectedSport(sport);
-    console.log('see mere');
+    console.log("see mere");
   };
   useEffect(() => {
     const unsubscribe = firestore
-      .collection('sports')
+      .collection("sports")
       .onSnapshot((snapshot) => {
         setLoading(true);
         if (snapshot.size) {
@@ -36,7 +36,7 @@ const HomePage = () => {
     };
   }, [firestore]);
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   return (
     <>
@@ -58,7 +58,7 @@ const HomePage = () => {
           />
           <button
             className="w-full bg-red-500 rounded-lg font-bold h-12 hover:bg-red-400"
-            onClick={() => navigate('/registersport')}
+            onClick={() => navigate("/registersport")}
           >
             Register Sport
           </button>
@@ -76,7 +76,7 @@ const HomePage = () => {
                   src={
                     sport.image
                       ? sport.image
-                      : 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?cs=srgb&dl=pexels-pixabay-356079.jpg&fm=jpg'
+                      : "https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?cs=srgb&dl=pexels-pixabay-356079.jpg&fm=jpg"
                   }
                   alt="temp"
                 />

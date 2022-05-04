@@ -1,4 +1,4 @@
-const Modal = ({ sport, setShowParentModal }) => {
+const SportDetailsModal = ({ sport, setShowParentModal }) => {
   return (
     <div>
       <div className="bg-black opacity-50  absolute z-10 top-0 left-0 h-screen w-screen"></div>
@@ -56,4 +56,4 @@ const Modal = ({ sport, setShowParentModal }) => {
   );
 };
 
-export default Modal;
+export default SportDetailsModal;
