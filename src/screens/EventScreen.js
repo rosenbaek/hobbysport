@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionItem,
@@ -9,8 +9,9 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import Modal from "../components/EventDetailsModal";
+import { firestore } from "../firebase";
 
-const EventScreen = () => {
+const EventScreen = ({ toast }) => {
   const navigate = useNavigate();
   const event = {
     name: "Event 1",
@@ -53,7 +54,30 @@ const EventScreen = () => {
     participants: 0,
   };
 
-  const events = [event, event2, event3, event4];
+  const _events = [event, event2, event3, event4];
+
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const seeMore = (event) => {
+    setShowModal(!showModal);
+    setSelectedEvent(event);
+    console.log("see mere");
+  };
+  const [events, setEvents] = useState(_events);
+
+  useEffect(() => {
+    firestore
+      .collection("events")
+      .get()
+      .then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+          setEvents(querySnapshot.map((snapshot) => snapshot.data()));
+        }
+      })
+      .catch(() => {
+        console.log("error");
+      });
+  }, []);
 
   const uniqueTemp = new Set(
     events.map((event) => {
@@ -62,13 +86,6 @@ const EventScreen = () => {
   );
 
   const unique = Array.from(uniqueTemp);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const seeMore = (event) => {
-    setShowModal(!showModal);
-    setSelectedEvent(event);
-    console.log("see mere");
-  };
 
   return (
     <>
