@@ -22,7 +22,6 @@ const EventScreen = ({ toast }) => {
   const seeMore = (event) => {
     setShowModal(!showModal);
     setSelectedEvent(event);
-    console.log('see mere');
   };
 
   useEffect(() => {
@@ -44,8 +43,6 @@ const EventScreen = ({ toast }) => {
           });
 
           Promise.all(promises).then(() => {
-            console.log('ARRAY: ' + tempArray[0].sport);
-
             const uniqueDates = [];
 
             tempArray.forEach((event) => {
@@ -88,9 +85,9 @@ const EventScreen = ({ toast }) => {
       <div className="mx-2 flex flex-col items-center">
         <button
           onClick={() => navigate('/registerevent')}
-          className="w-full bg-red-500 max-w-screen-sm rounded-lg mt-5 font-bold h-12 hover:bg-red-400"
+          className="w-full button-color button-hover max-w-screen-sm rounded-lg mt-5 font-bold h-12"
         >
-          Register Event
+          Opret Event
         </button>
         {!loading && (
           <div className="container grid grid-cols-2 py-5">
@@ -101,13 +98,13 @@ const EventScreen = ({ toast }) => {
                   .map((date, index) => (
                     <AccordionItem key={index}>
                       <AccordionItemHeading>
-                        <AccordionItemButton className="bg-red-500 py-2 rounded-lg px-2 text-xl mb-1">
+                        <AccordionItemButton className="button-color py-2 rounded-lg px-2 text-xl mb-1">
                           {date.toLocaleDateString('da-DK', {
                             dateStyle: 'full',
                           })}
                         </AccordionItemButton>
                       </AccordionItemHeading>
-                      <AccordionItemPanel>
+                      <AccordionItemPanel className=" rounded-lg mx-1">
                         {events
                           .sort((a, b) => (a.date < b.date ? -1 : 1))
                           .map(
@@ -120,7 +117,7 @@ const EventScreen = ({ toast }) => {
                                 }) && (
                                 <div
                                   key={index}
-                                  className="flex justify-between px-5 py-1 hover:bg-slate-200 hover:rounded-lg cursor-pointer"
+                                  className="grid grid-cols-3 px-5 py-1 hover:bg-[rgba(201,25,46,10%)] hover:rounded-lg cursor-pointer"
                                   onClick={() => {
                                     seeMore(event);
                                   }}

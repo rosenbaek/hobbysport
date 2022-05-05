@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import { firestore } from "../firebase";
-import Modal from "../components/SportDetailsModal";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { firestore } from '../firebase';
+import Modal from '../components/SportDetailsModal';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
   const [sports, setSports] = useState([]);
@@ -13,11 +13,11 @@ const HomePage = () => {
   const seeMore = (sport) => {
     setShowModal(!showModal);
     SetSelectedSport(sport);
-    console.log("see mere");
+    console.log('see mere');
   };
   useEffect(() => {
     const unsubscribe = firestore
-      .collection("sports")
+      .collection('sports')
       .onSnapshot((snapshot) => {
         setLoading(true);
         if (snapshot.size) {
@@ -36,7 +36,7 @@ const HomePage = () => {
     };
   }, [firestore]);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   return (
     <>
@@ -57,10 +57,10 @@ const HomePage = () => {
             value={search}
           />
           <button
-            className="w-full bg-red-500 rounded-lg font-bold h-12 hover:bg-red-400"
-            onClick={() => navigate("/registersport")}
+            className="w-full button-color rounded-lg font-bold h-12 button-hover"
+            onClick={() => navigate('/registersport')}
           >
-            Register Sport
+            Opret Sport
           </button>
         </div>
 
@@ -69,14 +69,14 @@ const HomePage = () => {
             sports.map((sport, index) => (
               <div
                 key={index}
-                className="justify-between relative rounded-lg border border-black flex flex-col gap-2 bg-white text-black w-full text-xl cursor-pointer mx-auto"
+                className="justify-between relative rounded-lg  flex flex-col gap-2 bg-white text-black w-full text-xl cursor-pointer mx-auto shadow-2xl"
               >
                 <img
                   className="rounded-t-lg w-full h-48"
                   src={
                     sport.image
                       ? sport.image
-                      : "https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?cs=srgb&dl=pexels-pixabay-356079.jpg&fm=jpg"
+                      : 'https://images.pexels.com/photos/356079/pexels-photo-356079.jpeg?cs=srgb&dl=pexels-pixabay-356079.jpg&fm=jpg'
                   }
                   alt="temp"
                 />
@@ -88,7 +88,7 @@ const HomePage = () => {
                   </ul>
 
                   <button
-                    className="bg-red-500 rounded-b-lg w-full py-3 font-medium hover:bg-red-400"
+                    className="button-color text-base rounded-b-lg w-full py-3 font-bold button-hover"
                     onClick={() => {
                       seeMore(sport);
                     }}

@@ -7,11 +7,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 const Navbar = (props) => {
   const [user] = useAuthState(props.auth);
-  useEffect(() => {
-    console.log(user);
-  });
   return (
-    <nav className="w-full border-b-2 border-red-500 py-5">
+    <nav className="w-full border-b-2 border-[rgb(201,25,46)] py-5">
       <div className="flex flex-col items-center lg:flex-row lg:justify-between container mx-auto">
         <div className="flex-1">
           <img className="h-12" src={logo} alt="logo" />
@@ -32,7 +29,7 @@ const Navbar = (props) => {
                 className="flex px-2 lg:px-5 items-center"
                 to="/registerteam"
               >
-                Registrer Team
+                Opret Hold
               </NavLink>
               <SignOut auth={props.auth} />
             </>

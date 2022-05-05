@@ -138,8 +138,8 @@ const RegisterEvent = ({ toast }) => {
                 id="team_solo"
                 name="hold"
                 onChange={handleChange}
-                value="hold"
-                checked={event.team_solo === 'hold'}
+                value="Hold"
+                checked={event.team_solo === 'Hold'}
               />
               <label className="text-lg" htmlFor="solo">
                 Solo event
@@ -148,9 +148,9 @@ const RegisterEvent = ({ toast }) => {
                 type="radio"
                 id="team_solo"
                 name="solo"
-                value="solo"
+                value="Solo"
                 onChange={handleChange}
-                checked={event.team_solo === 'solo'}
+                checked={event.team_solo === 'Solo'}
               />
             </div>
             <label className="text-lg" htmlFor="sport">
@@ -208,7 +208,7 @@ const RegisterEvent = ({ toast }) => {
               required
             />
             <button
-              className="bg-red-500 py-3 px-3 rounded-b-lg w-full hover:bg-red-400"
+              className="button-color font-bold py-3 px-3 rounded-b-lg w-full button-hover"
               type="submit"
             >
               Register

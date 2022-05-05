@@ -80,7 +80,7 @@ const RegisterSport = ({ toast }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-5 lg:py-10 mx-2 ">
-      <h1 className="text-2xl lg:text-4xl">Register Sport</h1>
+      <h1 className="text-2xl lg:text-4xl">Opret Sport</h1>
       <div className="flex flex-col lg:flex-row  bg-slate-50 rounded-lg lg:max-w-4xl w-full">
         <div className="border-r-2 w-full">
           <form className="flex flex-col mx-5" action="" id="registersport">
@@ -122,7 +122,7 @@ const RegisterSport = ({ toast }) => {
               <button
                 id="addGear"
                 onClick={addToList}
-                className="border bg-red-500 rounded-lg px-2 py-2 hover:bg-red-400"
+                className="button-color rounded-lg px-2 py-2 button-hover"
               >
                 Tilføj
               </button>
@@ -142,7 +142,7 @@ const RegisterSport = ({ toast }) => {
               <button
                 id="addRule"
                 onClick={addToList}
-                className="border bg-red-500 rounded-lg px-2 py-2 hover:bg-red-400"
+                className="button-color rounded-lg px-2 py-2 button-hover"
               >
                 Tilføj
               </button>
@@ -161,9 +161,9 @@ const RegisterSport = ({ toast }) => {
           </form>
           <button
             onClick={handleSubmit}
-            className="bg-red-500 py-3 px-3 rounded-bl-lg w-full hover:bg-red-400"
+            className="button-color uppercase font-bold text-normal py-3 px-3 rounded-bl-lg w-full button-hover"
           >
-            Register
+            Opret
           </button>
         </div>
 
@@ -182,7 +182,7 @@ const RegisterSport = ({ toast }) => {
                     <p className="max-w-sm break-words">{gear}</p>
                   </li>
                   <button
-                    className="bg-red-500 hover:bg-red-400 rounded-lg mr-2 py-1 px-2"
+                    className="button-color button-hover rounded-lg mr-2 py-1 px-2"
                     id="removeGear"
                     value={gear}
                     onClick={removeFromList}
@@ -208,7 +208,7 @@ const RegisterSport = ({ toast }) => {
                     <p className="max-w-sm break-words">{rule}</p>
                   </li>
                   <button
-                    className="bg-red-500 hover:bg-red-400 rounded-lg mr-2 py-1 px-2"
+                    className="button-color button-hover rounded-lg mr-2 py-1 px-2"
                     id="removeRule"
                     value={rule}
                     onClick={removeFromList}
