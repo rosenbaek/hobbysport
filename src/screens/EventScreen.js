@@ -35,7 +35,10 @@ const EventScreen = ({ toast }) => {
 						let tempObject = snapshot.data();
 						tempObject.date = new Date(tempObject.date);
 						tempArray.push(tempObject);
+
+						//TODO call firebase to get the sports populated
 					});
+
 					const uniqueTemp = new Set(
 						tempArray.map((event) => {
 							return event.date.toLocaleDateString("da-DK", {
@@ -89,7 +92,7 @@ const EventScreen = ({ toast }) => {
 														}) === date && (
 															<div
 																key={index}
-																className="flex justify-between px-5"
+																className="flex justify-between px-5 py-1 hover:bg-slate-200 hover:rounded-lg cursor-pointer"
 																onClick={() => {
 																	seeMore(event);
 																}}
