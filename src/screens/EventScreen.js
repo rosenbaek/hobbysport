@@ -28,15 +28,19 @@ const EventScreen = ({ toast }) => {
 		firestore
 			.collection("events")
 			.get()
-			.then((querySnapshot) => {
+			.then(async (querySnapshot) => {
 				if (!querySnapshot.empty) {
 					let tempArray = [];
-					querySnapshot.forEach((snapshot) => {
+					await querySnapshot.forEach(async (snapshot) => {
 						let tempObject = snapshot.data();
-						tempObject.date = new Date(tempObject.date);
-						tempArray.push(tempObject);
 
 						//TODO call firebase to get the sports populated
+						tempObject.sport = await tempObject.sport.get().then((d) => {
+							return { id: d.id, ...d.data() };
+						});
+
+						tempObject.date = new Date(tempObject.date);
+						tempArray.push(tempObject);
 					});
 
 					const uniqueTemp = new Set(
@@ -48,12 +52,17 @@ const EventScreen = ({ toast }) => {
 					);
 					setEvents(tempArray);
 					setUnique(Array.from(uniqueTemp));
+					//console.log(tempArray);
 				}
 			})
 			.catch((e) => {
 				console.log("error" + e);
 			});
 	}, []);
+
+	useEffect(() => {
+		console.log(events);
+	});
 
 	return (
 		<>
@@ -71,7 +80,7 @@ const EventScreen = ({ toast }) => {
 				>
 					Register Event
 				</button>
-				{events && (
+				{events !== undefined && (
 					<div className="container grid grid-cols-2 py-5">
 						<div className="border-r-[1px] h-screen w-full text-black">
 							<Accordion allowZeroExpanded="true" allowMultipleExpanded="true">

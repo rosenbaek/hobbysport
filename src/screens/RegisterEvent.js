@@ -35,6 +35,11 @@ const RegisterEvent = ({ toast }) => {
 		}
 		try {
 			const newEventRef = collection(firestore, "events");
+			//Save ref to sport
+			let documentRef = firestore.collection("sports").doc(event.sport);
+			let userRef = firestore.doc(documentRef.path);
+			event.sport = userRef;
+
 			const newEvent = await addDoc(newEventRef, event);
 			console.log(newEvent);
 			if (newEvent.id !== null) {
