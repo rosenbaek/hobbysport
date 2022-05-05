@@ -1,31 +1,29 @@
 import { useState, useEffect } from 'react';
 import { firestore } from '../firebase';
 import { auth } from '../firebase';
-import Modal from '../components/SportDetailsModal';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import SportModal from '../components/SportModal';
 
 const HomePage = ({ toast }) => {
   const [sports, setSports] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
   const [selectedSport, SetSelectedSport] = useState(null);
-  const [mobile, setMobile] = useState(false);
-  const [width, setWidth] = useState(window.innerWidth);
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const createSport = () => {
     if (!auth.currentUser) {
-      toast.error('Du skal logge ind for at oprette en sport');
+      toast.warn('Du skal logge ind for at oprette en sport');
     } else {
       navigate('/registersport');
     }
   };
   const seeMore = (sport) => {
-    setShowModal(!showModal);
     SetSelectedSport(sport);
+    setShowModal(true);
   };
   useEffect(() => {
-    setShowModal(false);
     const unsubscribe = firestore
       .collection('sports')
       .onSnapshot((snapshot) => {
@@ -44,22 +42,19 @@ const HomePage = ({ toast }) => {
     return () => {
       unsubscribe();
     };
-  }, [firestore]);
+  }, []);
 
   const [search, setSearch] = useState('');
-  useEffect(() => {
-    setMobile(width < 600);
-  }, [width]);
-
+  const close = () => setShowModal(false);
   return (
     <>
-      {showModal && (
-        <Modal
-          sport={selectedSport}
-          show={showModal}
-          setShowParentModal={setShowModal}
-        />
-      )}
+      <AnimatePresence
+        initial={false}
+        exitBeforeEnter={true}
+        onExitComplete={() => null}
+      >
+        {showModal && <SportModal sport={selectedSport} handleClose={close} />}
+      </AnimatePresence>
       <div className="flex flex-col mx-1">
         <div className="flex flex-col lg:flex-row justify-between py-10 gap-3 w-full">
           <input
@@ -101,9 +96,7 @@ const HomePage = ({ toast }) => {
 
                   <button
                     className="button-color border-[rgb(201,25,46)] text-base rounded-b-lg w-full py-3 font-bold button-hover"
-                    onClick={() => {
-                      seeMore(sport);
-                    }}
+                    onClick={() => seeMore(sport)}
                   >
                     Se mere
                   </button>

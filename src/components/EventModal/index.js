@@ -1,4 +1,6 @@
-import { firestore, auth } from '../firebase';
+import { motion } from 'framer-motion';
+import BackDrop from '../Backdrop';
+import { firestore, auth } from '../../firebase';
 import { useEffect, useState } from 'react';
 import {
   doc,
@@ -10,7 +12,31 @@ import {
   getDocs,
 } from 'firebase/firestore';
 
-const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
+const dropIn = {
+  hidden: {
+    y: '-100vh',
+    opacity: 0,
+  },
+  visible: {
+    y: '0',
+    opacity: 1,
+    transition: {
+      duration: 0.1,
+      type: 'spring',
+      damping: 25,
+      stiffness: 500,
+    },
+  },
+  exit: {
+    y: '100vh',
+    opacity: 0,
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
+
+const Modal = ({ handleClose, event, toast }) => {
   const [teams, setTeams] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState({});
 
@@ -24,7 +50,6 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       teams.push({ id: doc.id, ...doc.data() });
-      //   console.log(teams);
     });
 
     setTeams(teams);
@@ -34,7 +59,6 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
   const onChange = (e) => {
     e.preventDefault();
     setSelectedTeam({ ...teams.find((team) => team.id === e.target.value) });
-    // console.log(selectedTeam);
   };
   const joinEvent = async () => {
     const eventRef = doc(firestore, 'events', event.id);
@@ -44,7 +68,7 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
 
       if (event.participants.length < event.capacity) {
         if (event.participants.filter((p) => p.id === userRef.id).length > 0) {
-          toast.error('Du er allerede deltager');
+          toast.error('Du deltager allerede');
           return;
         }
 
@@ -52,20 +76,20 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
           participants: arrayUnion(userRef),
         });
         toast.success('Du er nu deltager');
-        setShowParentModal(false);
+        handleClose();
       }
     } else if (event.team_solo === 'Hold') {
       if (event.participants.length < event.capacity) {
         const teamRef = doc(firestore, 'teams', selectedTeam.id);
         if (event.participants.filter((p) => p.id === teamRef.id).length > 0) {
-          toast.error('Holdet er allerede deltager');
+          toast.error('Holdet deltager allerede');
           return;
         }
         await updateDoc(eventRef, {
           participants: arrayUnion(teamRef),
         });
         toast.success('Holdet er nu tilføjet');
-        setShowParentModal(false);
+        handleClose();
       }
     }
   };
@@ -75,49 +99,49 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
     }
   }, []);
   return (
-    <div>
-      <div className="bg-black opacity-50  absolute z-10 top-0 left-0 h-screen w-screen"></div>
-      <div className="flex  justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-        <div className="relative my-6 mx-auto w-full max-w-3xl rounded-lg">
-          <div className="border-0 bg-white  rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
-            <div className="p-5 border-b-2 border-solid border-[rgb(201,25,46)] rounded-t text-center">
-              <h3 className="text-3xl font-bold ">{event.name}</h3>
+    <BackDrop onClick={handleClose}>
+      <motion.div
+        onClick={(e) => e.stopPropagation()}
+        className="modal bg-white h-fit rounded-lg"
+        variants={dropIn}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+      >
+        <div className="h-full w-full">
+          <div className="">
+            <div className="w-full border-b-2 py-3 border-[rgb(201,25,46)] ">
+              <h3 className="text-3xl  text-center font-bold ">{event.name}</h3>
             </div>
-            <div className="relative p-3">
-              <label className="block text-black text-lg py-2">
-                <strong>Sport: </strong>
-                {event.sport.name}
-              </label>
-            </div>
-            <div className="relative p-3">
-              <label className="block text-black text-lg py-2">
-                <strong>Beskrivelse:</strong> {event.description}
-              </label>
-            </div>
-            <div className="relative p-3">
-              <label className="block text-black text-lg  py-2">
-                <strong>Type: </strong>
-                {event.type}
-              </label>
-            </div>
-            <div className="relative p-3">
-              <label className="block text-black text-lg py-2">
-                <strong>Hold / Solo: </strong>
-                {event.team_solo}
-              </label>
-            </div>
+            <label className="block text-black text-lg p-3">
+              <strong>Sport: </strong>
+              {event.sport.name}
+            </label>
+            <label className="block text-black text-lg p-3">
+              <strong>Beskrivelse:</strong> {event.description}
+            </label>
+            <label className="block text-black text-lg  p-3">
+              <strong>Type: </strong>
+              {event.type}
+            </label>
+
+            <label className="block text-black text-lg p-3">
+              <strong>Hold / Solo: </strong>
+              {event.team_solo}
+            </label>
+
             {auth.currentUser && (
               <div>
                 {event.team_solo === 'Hold' && (
-                  <div className="relative flex-auto p-3">
+                  <div className=" p-3">
                     <div>
-                      <label className="block text-black text-lg font-bold py-2 mb-2">
+                      <label className="text-black text-lg font-bold py-2 mb-2">
                         Vælg hold
                       </label>
                       <select
                         onChange={onChange}
                         defaultValue={teams.length > 0 ? teams[0] : 'DEFAULT'}
-                        className="block text-black text-lg font-bold py-2 border-[1px] border-black  rounded-lg w-full"
+                        className="text-black text-lg font-bold py-2 border-[1px] border-black  rounded-lg w-full"
                       >
                         {teams.length > 0 ? (
                           teams.map((team) => (
@@ -140,38 +164,35 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
                 )}
               </div>
             )}
+            <label className="block text-black text-lg  p-3">
+              <strong>Lokation: </strong>
+              {event.location}
+            </label>
+            <label className="block text-black text-lg p-3">
+              <strong>Dato: </strong>
+              {event.date.toLocaleString('da-DK', {
+                dateStyle: 'full',
+                timeStyle: 'short',
+              })}
+            </label>
 
-            <div className="relative p-3">
-              <label className="block text-black text-lg  py-2">
-                <strong>Lokation: </strong>
-                {event.location}
-              </label>
-            </div>
-            <div className="relative p-3">
-              <label className="block text-black text-lg py-2">
-                <strong>Dato: </strong>
-                {event.date.toLocaleString('da-DK', {
-                  dateStyle: 'full',
-                  timeStyle: 'short',
-                })}
-              </label>
-            </div>
-            <div className="relative p-3">
-              <label className="block text-black text-lg  py-2">
-                <p>
-                  <strong>Kapacitet:</strong> {event.participants.length}/
-                  {event.capacity}{' '}
-                  {event.team_solo === 'Hold' ? 'hold' : 'deltagere'}
-                </p>
-              </label>
-            </div>
+            <label className="block text-black text-lg  p-3">
+              <p>
+                <strong>Kapacitet:</strong> {event.participants.length}/
+                {event.capacity}{' '}
+                {event.team_solo === 'Hold' ? 'hold' : 'deltagere'}
+              </p>
+            </label>
+
             <div className="flex rounded-b-lg gap-1">
               <button
                 className={`button-color border-[rgb(201,25,46)] button-hover w-full background-transparent font-bold rounded-tr-lg uppercase px-6 py-3 text-sm outline-none focus:outline-none ${
-                  auth.currentUser ? 'rounded-bl-lg' : 'rounded-b-lg'
+                  auth.currentUser
+                    ? 'rounded-bl-lg'
+                    : 'rounded-b-lg rounded-tr-none'
                 }`}
                 type="button"
-                onClick={() => setShowParentModal(false)}
+                onClick={handleClose}
               >
                 Luk
               </button>
@@ -196,9 +217,9 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </BackDrop>
   );
 };
 
-export default EventDetailsModal;
+export default Modal;

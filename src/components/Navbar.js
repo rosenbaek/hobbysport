@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-import '../App.css';
 import { NavLink } from 'react-router-dom';
 import logo from '../images/logo.webp';
 import { SignIn, SignOut } from './LoginComponents';

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
 import { auth, firestore } from '../firebase';
-import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
+
 const initialTeam = {
   name: '',
   members: [],
@@ -48,7 +48,7 @@ const RegisterTeam = ({ toast }) => {
   const addToList = (e) => {
     e.preventDefault();
     if (e.target.id === 'addMember') {
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(members)) {
+      if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(members)) {
         firestore
           .collection('users')
           .doc(members)
@@ -70,6 +70,10 @@ const RegisterTeam = ({ toast }) => {
   const removeFromList = (e) => {
     e.preventDefault();
     if (e.target.id === 'removeMember') {
+      if (e.target.value === team.captain) {
+        toast.warn('Du kan ikke ferne kaptajnen');
+        return;
+      }
       setTeam({
         ...team,
         members: team.members.filter((member) => member !== e.target.value),
@@ -157,6 +161,7 @@ const RegisterTeam = ({ toast }) => {
                   <li className="list-decimal">
                     <p className="max-w-sm break-words">{member}</p>
                   </li>
+
                   <button
                     className="button-color border-[rgb(201,25,46)] button-hover rounded-lg py-1 px-2"
                     id="removeMember"

@@ -8,8 +8,9 @@ import {
 } from 'react-accessible-accordion';
 
 import { useNavigate } from 'react-router-dom';
-import Modal from '../components/EventDetailsModal';
 import { firestore, auth } from '../firebase';
+import EventModal from '../components/EventModal';
+import { AnimatePresence } from 'framer-motion';
 
 const EventScreen = ({ toast }) => {
   const navigate = useNavigate();
@@ -20,13 +21,13 @@ const EventScreen = ({ toast }) => {
   const [loading, setLoading] = useState(false);
 
   const seeMore = (event) => {
-    setShowModal(!showModal);
     setSelectedEvent(event);
+    setShowModal(true);
   };
 
   const createEvent = () => {
     if (!auth.currentUser) {
-      toast.error('Du skal logge ind for at oprette en event');
+      toast.warn('Du skal logge ind for at oprette en event');
     } else {
       navigate('/registerevent');
     }
@@ -78,18 +79,20 @@ const EventScreen = ({ toast }) => {
     return () => {
       unsubscribe();
     };
-  }, [firestore]);
+  }, []);
 
+  const close = () => setShowModal(false);
   return (
     <>
-      {showModal && (
-        <Modal
-          event={selectedEvent}
-          show={showModal}
-          toast={toast}
-          setShowParentModal={setShowModal}
-        />
-      )}
+      <AnimatePresence
+        initial={false}
+        exitBeforeEnter={true}
+        onExitComplete={() => null}
+      >
+        {showModal && (
+          <EventModal event={selectedEvent} handleClose={close} toast={toast} />
+        )}
+      </AnimatePresence>
       <div className="mx-2 flex flex-col items-center">
         <button
           onClick={createEvent}
@@ -99,7 +102,7 @@ const EventScreen = ({ toast }) => {
         </button>
         {!loading && (
           <div className="container xl:grid xl:grid-cols-2 py-5">
-            <div className="border-r-[1px] h-screen w-full text-black">
+            <div className="border-r-[1px] w-full text-black">
               <Accordion allowZeroExpanded="true" allowMultipleExpanded="true">
                 {unique
                   .sort((a, b) => (a < b ? -1 : 1))
@@ -149,7 +152,6 @@ const EventScreen = ({ toast }) => {
                   ))}
               </Accordion>
             </div>
-            <div className=" h-screen w-full"></div>
           </div>
         )}
       </div>

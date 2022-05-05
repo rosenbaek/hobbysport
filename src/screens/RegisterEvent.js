@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { addDoc, collection } from 'firebase/firestore';
-import { auth, firestore } from '../firebase';
+import { firestore } from '../firebase';
 
 const initialEvent = {
   name: '',
@@ -26,20 +26,17 @@ const RegisterEvent = ({ toast }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Checks that solo or team is selected
     if (event.team_solo === '') {
       toast.error('Please select a type of event');
       return;
     }
     try {
       const newEventRef = collection(firestore, 'events');
-      //Save ref to sport
       let documentRef = firestore.collection('sports').doc(event.sport);
       let userRef = firestore.doc(documentRef.path);
       event.sport = userRef;
 
       const newEvent = await addDoc(newEventRef, event);
-      //   console.log(newEvent);
       if (newEvent.id !== null) {
         toast.success('Eventen blev tilføjet');
       } else {
@@ -48,13 +45,11 @@ const RegisterEvent = ({ toast }) => {
     } catch (e) {
       console.error(e);
     }
-    // console.log(event);
     setEvent(initialEvent);
     document.getElementById('registersport').reset();
   };
 
   useEffect(() => {
-    // console.log('test');
     firestore
       .collection('sports')
       .get()
@@ -62,8 +57,6 @@ const RegisterEvent = ({ toast }) => {
         if (!querySnapshot.empty) {
           let _sports = [];
           querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            // console.log(doc.id, ' => ', doc.data());
             const _sport = { id: doc.id, ...doc.data() };
             _sports.push(_sport);
           });

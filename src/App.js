@@ -1,9 +1,7 @@
-import { Routes, Route, Link } from 'react-router-dom';
-import './App.css';
-import ProtectedScreen from './screens/ProtectedScreen';
+import { Routes, Route } from 'react-router-dom';
 import HomePage from './screens/HomePage';
 import Navbar from './components/Navbar';
-import { auth, firestore } from './firebase';
+import { auth } from './firebase';
 
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -12,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import RegisterTeam from './screens/RegisterTeam';
 import EventScreen from './screens/EventScreen';
 import RegisterEvent from './screens/RegisterEvent';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [user] = useAuthState(auth);
@@ -22,17 +21,9 @@ function App() {
         <Routes>
           <Route path="/" end element={<HomePage toast={toast} />} />
           <Route
-            path="/protected"
-            element={
-              <ProtectedRoute user={user}>
-                <ProtectedScreen />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/registersport"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={user} toast={toast} site={'registersport'}>
                 <RegisterSport toast={toast} />
               </ProtectedRoute>
             }
@@ -41,7 +32,7 @@ function App() {
           <Route
             path="/registerteam"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={user} toast={toast} site={'registerteam'}>
                 <RegisterTeam toast={toast} />
               </ProtectedRoute>
             }
@@ -49,7 +40,7 @@ function App() {
           <Route
             path="/registerevent"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={user} toast={toast} site={'registerevent'}>
                 <RegisterEvent toast={toast} />
               </ProtectedRoute>
             }

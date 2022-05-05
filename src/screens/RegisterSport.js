@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { firestore } from '../firebase';
-import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 const initialSport = {
   name: '',
@@ -31,7 +30,6 @@ const RegisterSport = ({ toast }) => {
     } else {
       try {
         const newSport = await addDoc(newSportRef, sports);
-        console.log(newSport);
         if (newSport.id !== null) {
           toast.success('Sporten blev tilføjet');
         } else {
