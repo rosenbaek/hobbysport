@@ -1,17 +1,17 @@
-import { Routes, Route, Link } from "react-router-dom";
-import "./App.css";
-import ProtectedScreen from "./screens/ProtectedScreen";
-import HomePage from "./screens/HomePage";
-import Navbar from "./components/Navbar";
-import { auth, firestore } from "./firebase";
+import { Routes, Route, Link } from 'react-router-dom';
+import './App.css';
+import ProtectedScreen from './screens/ProtectedScreen';
+import HomePage from './screens/HomePage';
+import Navbar from './components/Navbar';
+import { auth, firestore } from './firebase';
 
-import ProtectedRoute from "./components/ProtectedRoute";
-import { useAuthState } from "react-firebase-hooks/auth";
-import RegisterSport from "./screens/RegisterSport";
-import { ToastContainer, toast } from "react-toastify";
-import RegisterTeam from "./screens/RegisterTeam";
-import EventScreen from "./screens/EventScreen";
-import RegisterEvent from "./screens/RegisterEvent";
+import ProtectedRoute from './components/ProtectedRoute';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import RegisterSport from './screens/RegisterSport';
+import { ToastContainer, toast } from 'react-toastify';
+import RegisterTeam from './screens/RegisterTeam';
+import EventScreen from './screens/EventScreen';
+import RegisterEvent from './screens/RegisterEvent';
 
 function App() {
   const [user] = useAuthState(auth);
@@ -37,7 +37,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/events" element={<EventScreen />} />
+          <Route path="/events" element={<EventScreen toast={toast} />} />
           <Route
             path="/registerteam"
             element={

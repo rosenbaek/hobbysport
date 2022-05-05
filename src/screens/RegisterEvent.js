@@ -8,8 +8,8 @@ const initialEvent = {
   type: '',
   sport: {},
   location: '',
-  date: null,
-  capacity: null,
+  date: '',
+  capacity: '',
   team_solo: '',
   participants: [],
 };
@@ -39,7 +39,7 @@ const RegisterEvent = ({ toast }) => {
       event.sport = userRef;
 
       const newEvent = await addDoc(newEventRef, event);
-      console.log(newEvent);
+      //   console.log(newEvent);
       if (newEvent.id !== null) {
         toast.success('Eventen blev tilføjet');
       } else {
@@ -48,13 +48,13 @@ const RegisterEvent = ({ toast }) => {
     } catch (e) {
       console.error(e);
     }
-    console.log(event);
+    // console.log(event);
     setEvent(initialEvent);
     document.getElementById('registersport').reset();
   };
 
   useEffect(() => {
-    console.log('test');
+    // console.log('test');
     firestore
       .collection('sports')
       .get()
@@ -63,7 +63,7 @@ const RegisterEvent = ({ toast }) => {
           let _sports = [];
           querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, ' => ', doc.data());
+            // console.log(doc.id, ' => ', doc.data());
             const _sport = { id: doc.id, ...doc.data() };
             _sports.push(_sport);
           });

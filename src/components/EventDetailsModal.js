@@ -1,11 +1,27 @@
-const EventDetailsModal = ({ event, setShowParentModal }) => {
-  const joinEvent = () => {
-    if (event.type == 'solo') {
-      alert("You can't join a solo event");
-    } else if (event.type == 'team') {
-      alert("You can't join a team event");
+import { firestore, auth } from '../firebase';
+import { doc, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+
+const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
+  const joinEvent = async () => {
+    if (event.team_solo === 'solo') {
+      const user = auth.currentUser;
+      const userRef = doc(firestore, 'users', user.uid);
+
+      if (event.participants.length < event.capacity) {
+        if (event.participants.filter((p) => p.id === userRef.id).length > 0) {
+          toast.error('Du er allerede deltager');
+          return;
+        }
+        const eventRef = doc(firestore, 'events', event.id);
+        await updateDoc(eventRef, {
+          participants: arrayUnion(userRef),
+        });
+        toast.success('Du er nu deltager');
+      } else if (event.team_solo === 'hold') {
+        alert("You can't join a team event");
+      }
+      setShowParentModal(false);
     }
-    setShowParentModal(false);
   };
   return (
     <div>
@@ -24,6 +40,11 @@ const EventDetailsModal = ({ event, setShowParentModal }) => {
             <div className="relative p-6 flex-auto">
               <label className="block text-black text-lg font-bold py-2">
                 {event.type}
+              </label>
+            </div>
+            <div className="relative p-6 flex-auto">
+              <label className="block text-black text-lg font-bold py-2">
+                {event.team_solo}
               </label>
             </div>
             <div className="relative p-6 flex-auto">
