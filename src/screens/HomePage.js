@@ -9,6 +9,8 @@ const HomePage = ({ toast }) => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [selectedSport, SetSelectedSport] = useState(null);
+  const [mobile, setMobile] = useState(false);
+  const [width, setWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
 
   const createSport = () => {
@@ -23,6 +25,7 @@ const HomePage = ({ toast }) => {
     SetSelectedSport(sport);
   };
   useEffect(() => {
+    setShowModal(false);
     const unsubscribe = firestore
       .collection('sports')
       .onSnapshot((snapshot) => {
@@ -44,6 +47,9 @@ const HomePage = ({ toast }) => {
   }, [firestore]);
 
   const [search, setSearch] = useState('');
+  useEffect(() => {
+    setMobile(width < 600);
+  }, [width]);
 
   return (
     <>

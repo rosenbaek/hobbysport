@@ -2,7 +2,7 @@ const SportDetailsModal = ({ sport, setShowParentModal }) => {
   return (
     <div>
       <div className="bg-black opacity-50  absolute z-10 top-0 left-0 h-full w-full"></div>
-      <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+      <div className="flex justify-center items-center overflow-x-hidden overflow-y-hidden absolute z-50 outline-none focus:outline-none h-max">
         <div className="relative w-full my-6 mx-auto max-w-3xl ">
           <div className="border-0 bg-white  rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
             <div className="text-center p-5 border-b border-solid border-[rgb(201,25,46)] rounded-t ">
