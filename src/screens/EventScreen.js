@@ -17,6 +17,7 @@ const EventScreen = ({ toast }) => {
 	const [showModal, setShowModal] = useState(false);
 	const [unique, setUnique] = useState([]);
 	const [events, setEvents] = useState();
+	const [loading, setLoading] = useState(false);
 
 	const seeMore = (event) => {
 		setShowModal(!showModal);
@@ -25,6 +26,7 @@ const EventScreen = ({ toast }) => {
 	};
 
 	useEffect(() => {
+		setLoading(true);
 		firestore
 			.collection("events")
 			.get()
@@ -33,26 +35,27 @@ const EventScreen = ({ toast }) => {
 					let tempArray = [];
 					await querySnapshot.forEach(async (snapshot) => {
 						let tempObject = snapshot.data();
-
-						//TODO call firebase to get the sports populated
-						tempObject.sport = await tempObject.sport.get().then((d) => {
-							return { id: d.id, ...d.data() };
+						await tempObject.sport.get().then((d) => {
+							tempObject.sport = { id: d.id, ...d.data() };
 						});
-
+						console.log("TEMP: " + JSON.stringify(tempObject));
 						tempObject.date = new Date(tempObject.date);
 						tempArray.push(tempObject);
-					});
 
-					const uniqueTemp = new Set(
-						tempArray.map((event) => {
-							return event.date.toLocaleDateString("da-DK", {
-								dateStyle: "full",
-							});
-						})
-					);
-					setEvents(tempArray);
-					setUnique(Array.from(uniqueTemp));
-					//console.log(tempArray);
+						//TODO call firebase to get the sports populated
+						console.log("ARRAY: " + tempArray);
+						const uniqueTemp = new Set(
+							tempArray.map((event) => {
+								return event.date.toLocaleDateString("da-DK", {
+									dateStyle: "full",
+								});
+							})
+						);
+						console.log(uniqueTemp);
+						setEvents(tempArray);
+						setUnique(Array.from(uniqueTemp));
+						setLoading(false);
+					});
 				}
 			})
 			.catch((e) => {
@@ -80,7 +83,7 @@ const EventScreen = ({ toast }) => {
 				>
 					Register Event
 				</button>
-				{events !== undefined && (
+				{!loading && (
 					<div className="container grid grid-cols-2 py-5">
 						<div className="border-r-[1px] h-screen w-full text-black">
 							<Accordion allowZeroExpanded="true" allowMultipleExpanded="true">
@@ -116,6 +119,7 @@ const EventScreen = ({ toast }) => {
 																		: event.date.getMinutes()}
 																</p>
 																<p>{event.name}</p>
+																<p>{event.sport.name}</p>
 															</div>
 														)
 												)}
