@@ -20,7 +20,7 @@ function App() {
       <Navbar auth={auth} toast={toast} />
       <div className="container mx-auto">
         <Routes>
-          <Route path="/" end element={<HomePage />} />
+          <Route path="/" end element={<HomePage toast={toast} />} />
           <Route
             path="/protected"
             element={

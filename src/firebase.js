@@ -3,13 +3,13 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 firebase.initializeApp({
-  apiKey: 'AIzaSyDvzi-Yx-rOVV1A5hiwl8f1Xa_qFy-sCR0',
-  authDomain: 'hobbysport-91224.firebaseapp.com',
-  projectId: 'hobbysport-91224',
-  storageBucket: 'hobbysport-91224.appspot.com',
-  messagingSenderId: '234830154797',
-  appId: '1:234830154797:web:28c27ca8a788502ea33ca4',
-  measurementId: 'G-DNMPRXQ6HT',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENTID,
 });
 
 export const auth = firebase.auth();

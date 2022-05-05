@@ -9,7 +9,7 @@ import {
 
 import { useNavigate } from 'react-router-dom';
 import Modal from '../components/EventDetailsModal';
-import { firestore } from '../firebase';
+import { firestore, auth } from '../firebase';
 
 const EventScreen = ({ toast }) => {
   const navigate = useNavigate();
@@ -22,6 +22,14 @@ const EventScreen = ({ toast }) => {
   const seeMore = (event) => {
     setShowModal(!showModal);
     setSelectedEvent(event);
+  };
+
+  const createEvent = () => {
+    if (!auth.currentUser) {
+      toast.error('Du skal logge ind for at oprette en event');
+    } else {
+      navigate('/registerevent');
+    }
   };
 
   useEffect(() => {
@@ -84,13 +92,13 @@ const EventScreen = ({ toast }) => {
       )}
       <div className="mx-2 flex flex-col items-center">
         <button
-          onClick={() => navigate('/registerevent')}
-          className="w-full button-color button-hover max-w-screen-sm rounded-lg mt-5 font-bold h-12"
+          onClick={createEvent}
+          className="w-full button-color border-[rgb(201,25,46)] button-hover max-w-screen-sm rounded-lg mt-5 font-bold h-12"
         >
           Opret Event
         </button>
         {!loading && (
-          <div className="container grid grid-cols-2 py-5">
+          <div className="container xl:grid xl:grid-cols-2 py-5">
             <div className="border-r-[1px] h-screen w-full text-black">
               <Accordion allowZeroExpanded="true" allowMultipleExpanded="true">
                 {unique
@@ -98,7 +106,7 @@ const EventScreen = ({ toast }) => {
                   .map((date, index) => (
                     <AccordionItem key={index}>
                       <AccordionItemHeading>
-                        <AccordionItemButton className="button-color py-2 rounded-lg px-2 text-xl mb-1">
+                        <AccordionItemButton className="button-color py-2 uppercase rounded-lg px-3 text-lg mb-1">
                           {date.toLocaleDateString('da-DK', {
                             dateStyle: 'full',
                           })}
@@ -117,7 +125,7 @@ const EventScreen = ({ toast }) => {
                                 }) && (
                                 <div
                                   key={index}
-                                  className="grid grid-cols-3 px-5 py-1 hover:bg-[rgba(201,25,46,10%)] hover:rounded-lg cursor-pointer"
+                                  className="grid grid-cols-3 text-center px-5 py-3 hover:bg-[rgba(201,25,46,10%)] hover:rounded-lg cursor-pointer "
                                   onClick={() => {
                                     seeMore(event);
                                   }}

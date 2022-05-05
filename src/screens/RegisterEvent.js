@@ -208,10 +208,10 @@ const RegisterEvent = ({ toast }) => {
               required
             />
             <button
-              className="button-color font-bold py-3 px-3 rounded-b-lg w-full button-hover"
+              className="button-color uppercase font-bold py-3 px-3 rounded-b-lg w-full button-hover"
               type="submit"
             >
-              Register
+              Opret Event
             </button>
           </form>
         </div>

@@ -89,47 +89,49 @@ const RegisterTeam = ({ toast }) => {
     }
   }, []);
   return (
-    <div className="flex flex-col items-center gap-3 py-10 mx-5 ">
+    <div className="flex flex-col items-center gap-3 py-10 lg:mx-5 ">
       <h1 className="text-4xl">Opret Hold</h1>
-      <div className="flex bg-slate-50  rounded-lg pr-5">
-        <div className="border-r-2">
-          <form className="flex flex-col mx-5" action="" id="registersport">
+      <div className="flex flex-col lg:flex-row shadow-2xl rounded-lg px-5 lg:px-0 lg:pr-5 py-3 lg:py-0 lg:pt-5 ">
+        <div className="border-b-2 pb-3 lg:pb-0 lg:border-b-0 lg:border-r-2 border-[rgb(201,25,46)]">
+          <form className="flex flex-col lg:mx-5" action="" id="registersport">
             <label className="text-lg" htmlFor="name">
               Hold Navn
             </label>
             <input
-              className="border-2 w-full rounded-lg py-1 px-2"
+              className="border-2 w-full rounded-lg py-2 px-2"
               type="text"
               id="name"
               onChange={handleChange}
               value={team.name}
               required
             />
-            <label className="text-lg mb-2" htmlFor="name">
+            <label className="text-lg mb-2" htmlFor="captain">
               Hold Kaptajn (email)
             </label>
             <input
-              className="border-2 w-full rounded-lg mb-3 py-1 px-2"
+              className="border-2 w-full rounded-lg mb-3 py-2 px-2"
               type="text"
+              name="captain"
               id="captain"
               value={user.email}
               disabled
             />
-            <label className="text-lg" htmlFor="name">
+            <label className="text-lg" htmlFor="members">
               Holdkammerater (email)
             </label>
-            <div className="py-1 mb-3 px-2">
+            <div className="flex flex-col lg:flex-row mb-3 ">
               <input
-                className="border-2 rounded-lg px-2 py-1"
+                className="border-2 rounded-lg px-2 py-2 w-full"
                 type="text"
                 id="members"
+                name="members"
                 onChange={handleList}
                 value={members}
               />
               <button
                 id="addMember"
                 onClick={addToList}
-                className="button-color border-4 border-white button-hover rounded-lg px-2 py-1"
+                className="button-color border-[rgb(201,25,46)] border-4 button-hover font-bold rounded-lg px-2 w-full lg:w-fit"
               >
                 Tilføj
               </button>
@@ -137,7 +139,7 @@ const RegisterTeam = ({ toast }) => {
           </form>
           <button
             onClick={handleSubmit}
-            className="button-color button-hover py-3 px-3 text-sm font-bold uppercase rounded-bl-lg w-full"
+            className="button-color border-[rgb(201,25,46)] button-hover py-3 px-3 text-sm font-bold uppercase rounded-bl-lg w-full"
           >
             Opret
           </button>
@@ -156,7 +158,7 @@ const RegisterTeam = ({ toast }) => {
                     <p className="max-w-sm break-words">{member}</p>
                   </li>
                   <button
-                    className="button-color button-hover rounded-lg py-1 px-2"
+                    className="button-color border-[rgb(201,25,46)] button-hover rounded-lg py-1 px-2"
                     id="removeMember"
                     value={member}
                     onClick={removeFromList}

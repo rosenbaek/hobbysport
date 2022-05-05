@@ -81,7 +81,7 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
         <div className="relative my-6 mx-auto w-full max-w-3xl rounded-lg">
           <div className="border-0 bg-white  rounded-lg shadow-lg relative flex flex-col w-full outline-none focus:outline-none">
             <div className="p-5 border-b-2 border-solid border-[rgb(201,25,46)] rounded-t text-center">
-              <h3 className="text-6xl font-bold ">{event.name}</h3>
+              <h3 className="text-3xl font-bold ">{event.name}</h3>
             </div>
             <div className="relative p-3">
               <label className="block text-black text-lg py-2">
@@ -106,30 +106,38 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
                 {event.team_solo}
               </label>
             </div>
-            {event.team_solo === 'Hold' && (
-              <div className="relative flex-auto p-3">
-                <div>
-                  <label className="block text-black text-lg font-bold py-2 mb-2">
-                    Vælg hold
-                  </label>
-                  <select
-                    onChange={onChange}
-                    defaultValue={teams.length > 0 ? teams[0] : 'DEFAULT'}
-                    className="block text-black text-lg font-bold py-2 border-[1px] border-black  rounded-lg w-full"
-                  >
-                    {teams.length > 0 ? (
-                      teams.map((team) => (
-                        <option key={team.id} value={team.id} className="py-2">
-                          {team.name}
-                        </option>
-                      ))
-                    ) : (
-                      <option key={1337} disabled value="DEFAULT">
-                        Du har ingen hold
-                      </option>
-                    )}
-                  </select>
-                </div>
+            {auth.currentUser && (
+              <div>
+                {event.team_solo === 'Hold' && (
+                  <div className="relative flex-auto p-3">
+                    <div>
+                      <label className="block text-black text-lg font-bold py-2 mb-2">
+                        Vælg hold
+                      </label>
+                      <select
+                        onChange={onChange}
+                        defaultValue={teams.length > 0 ? teams[0] : 'DEFAULT'}
+                        className="block text-black text-lg font-bold py-2 border-[1px] border-black  rounded-lg w-full"
+                      >
+                        {teams.length > 0 ? (
+                          teams.map((team) => (
+                            <option
+                              key={team.id}
+                              value={team.id}
+                              className="py-2"
+                            >
+                              {team.name}
+                            </option>
+                          ))
+                        ) : (
+                          <option key={1337} disabled value="DEFAULT">
+                            Du har ingen hold
+                          </option>
+                        )}
+                      </select>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -157,9 +165,9 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
                 </p>
               </label>
             </div>
-            <div className="flex rounded-b-lg">
+            <div className="flex rounded-b-lg gap-1">
               <button
-                className={`button-color button-hover w-full background-transparent font-bold uppercase px-6 py-3 text-sm outline-none focus:outline-none ${
+                className={`button-color border-[rgb(201,25,46)] button-hover w-full background-transparent font-bold rounded-tr-lg uppercase px-6 py-3 text-sm outline-none focus:outline-none ${
                   auth.currentUser ? 'rounded-bl-lg' : 'rounded-b-lg'
                 }`}
                 type="button"
@@ -172,8 +180,8 @@ const EventDetailsModal = ({ event, setShowParentModal, toast }) => {
                   className={`${
                     teams.length === 0
                       ? 'bg-gray-500'
-                      : 'button-color button-hover border-l-4'
-                  }  border-l-0 w-full background-transparent font-bold uppercase px-6 py-3 text-sm outline-none focus:outline-none rounded-br-lg`}
+                      : 'button-color border-[rgb(201,25,46)] button-hover'
+                  }  w-full background-transparent font-bold uppercase px-6 py-3 text-sm outline-none focus:outline-none rounded-tl-lg rounded-br-lg`}
                   type="button"
                   onClick={joinEvent}
                   disabled={
