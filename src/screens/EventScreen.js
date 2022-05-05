@@ -30,20 +30,22 @@ const EventScreen = ({ toast }) => {
 		firestore
 			.collection("events")
 			.get()
-			.then(async (querySnapshot) => {
+			.then(function (querySnapshot) {
 				if (!querySnapshot.empty) {
 					let tempArray = [];
-					await querySnapshot.forEach(async (snapshot) => {
+
+					let promises = querySnapshot.docs.map(async (snapshot) => {
 						let tempObject = snapshot.data();
 						await tempObject.sport.get().then((d) => {
 							tempObject.sport = { id: d.id, ...d.data() };
 						});
-						console.log("TEMP: " + JSON.stringify(tempObject));
+
 						tempObject.date = new Date(tempObject.date);
 						tempArray.push(tempObject);
+					});
 
-						//TODO call firebase to get the sports populated
-						console.log("ARRAY: " + tempArray);
+					Promise.all(promises).then(() => {
+						console.log("ARRAY: " + tempArray[0].sport);
 						const uniqueTemp = new Set(
 							tempArray.map((event) => {
 								return event.date.toLocaleDateString("da-DK", {
